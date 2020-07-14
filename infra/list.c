@@ -179,7 +179,7 @@ replace(List *l, ulong index, void *replacement, Jstring *type)
 	if(l->listtype == Set){
 		repindex = contains(l, replacement, type)
 		if(repindex < 0)
-			e = _replace(l, index, replacement, type)
+			e = _replace(l, index, replacement, type);
 		if(repindex == index)
 			return 0; /* no point */
 		if(repindex < index)

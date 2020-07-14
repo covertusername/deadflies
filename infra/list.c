@@ -183,7 +183,7 @@ replace(List *l, ulong index, void *replacement, Jstring *type)
 		if(repindex == index)
 			return 0; /* no point */
 		if(repindex < index)
-			lremove(l, index)
+			lremove(l, index);
 		if(repindex > index){
 			e = _replace(l, index, replacement, type);
 			if(e < 0)

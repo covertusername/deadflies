@@ -1,0 +1,5 @@
+This is an extremely unfinished web browser engine core, written in
+Plan 9 C and intended to be run on Plan 9.  Do not expect frequent
+commits.
+
+infra/ is the implementation of the Infra Standard at https://infra.spec.whatwg.org/.

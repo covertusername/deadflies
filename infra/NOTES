@@ -1,0 +1,35 @@
+a scalar value string was originally going to be its own type that
+contained a pointer to a Jstring.  it even had its own new and free
+functions.  i decided that this added unnecessary complexity, used
+more memory than necessary, and required extra time in error-handling
+code, as well as stepping too far down the path of
+object-orientedness.  the whole type was replaced by a flag in the
+Jstring struct that identified the string as scalar, since scalar
+strings are just Jstrings that are known to contain no isolated
+surrogate code points.
+
+for the replace() function in list.c, i am not sure if it is better
+to: a) on an error in the supplied condition function, abort
+processing leaving the list modified
+b) don't modify the list unles the condition function did not return
+any
+	errors, and do so by allocating a large array containing index
+	values to replace in the list (enough to contain every
+	possible list index)
+c) as in b), but realloc() the array every time we add to it
+
+a) takes the least memory but possibly leaves the list in an
+undesirable state.  b) takes a LOT of memory but that's cheap these
+days, allocates as much as could possibly be needed in one go, using
+just one system call.  c) takes far less memory than b and can still
+leave the list unmodified, but could require lots of calls to
+realloc().  it's bad enough that a lot of the functions that deal with
+Jstrings do this.
+
+a) would be simplest to implement but isn't safe, b) is about as safe
+as c) but might fail if it can't allocate the index tracking array.
+b) and c) are also more consistent with many other system functions
+that leave passed pointers unmodified on error.
+
+i am choosing option c) for this.  it wouldn't be very hard to switch
+to another option if necessary.

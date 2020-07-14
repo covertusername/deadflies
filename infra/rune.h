@@ -1,0 +1,16 @@
+int issurrogate(Rune r);
+int isnotchar(Rune r);
+int istabornewline(Rune r);
+int iswhitespace(Rune r);
+int isc0(Rune r);
+int isc0orspace(Rune r);
+int iscontrol(Rune r);
+int isasciidigit(Rune r);
+int isasciiuxdigit(Rune r);
+int isasciilxdigit(Rune r);
+int isasciixdigit(Rune r);
+int isasciiupper(Rune r);
+int isasciilower(Rune r);
+int isasciialpha(Rune r);
+int isasciialnum(Rune r);
+uint runecnt(Rune *r);

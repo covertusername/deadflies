@@ -358,7 +358,23 @@ intersection(List *a, List *b)
 			if(append(ret, a->items[i], a->info.typename) == -1){
 				freelist(ret);
 				return nil;
-			}				
+			}
 	}
 	return ret;
+}
+
+List *
+union(List *a, List *b)
+{
+	List *ret;
+
+	ret = clone(a);
+	if(ret == nil)
+		return nil;
+	for(i = 0; i < b->size; i++){
+		if(append(ret, b->items[i], b->info.typename) == -1){
+			freelist(ret);
+			return nil;
+		}
+	}
 }

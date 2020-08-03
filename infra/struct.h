@@ -39,6 +39,7 @@ int replace(List *l, ulong index, void *replacement, Jstring *type);
 int empty(List *l);
 int insert(List *l, void *item, Jstring *type, ulong index);
 void lremove(List *l, ulong index);
+List *clone(List *donor);
 
 /* stacks */
 
@@ -53,4 +54,5 @@ void *dequeue(List *l);
 /* sets */
 
 int subset(List *a, List *b);
-int intersect(List *a, List *b);
+List *intersection(List *a, List *b);
+List *union(List *a, List *b);

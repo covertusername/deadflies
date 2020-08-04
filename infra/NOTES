@@ -33,3 +33,6 @@ that leave passed pointers unmodified on error.
 
 i am choosing option c) for this.  it wouldn't be very hard to switch
 to another option if necessary.
+
+the sheer number of headers in this directory is upsetting and i
+should probably consolidate them into one or two at some point.

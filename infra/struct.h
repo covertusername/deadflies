@@ -1,5 +1,6 @@
 typedef struct List List;
 typedef struct Typeinfo Typeinfo;
+typedef struct Map Map;
 
 /* list types */
 
@@ -27,6 +28,15 @@ struct List
 	ulong size;
 	int listtype; /* the type of list */
 };
+
+struct Map
+{
+	QLock;
+	Ref;
+	List *set; /* the key part of the map. always an ordered set. should not be used directly, unless returned when getting the keys. the items are the keys. */
+	Typeinfo info;
+	void **values;
+}
 
 /* generic list operations */
 List *newlist(int listtype, Typeinfo info);
@@ -56,3 +66,9 @@ void *dequeue(List *l);
 int subset(List *a, List *b);
 List *intersection(List *a, List *b);
 List *union(List *a, List *b);
+
+/* map operations */
+
+Map *newmap(Typeinfo keyinfo, Typeinfo valinfo);
+void freemap(Map *map);
+void *getval(Map *map, void *key, Jstring *type);

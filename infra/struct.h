@@ -72,3 +72,4 @@ List *union(List *a, List *b);
 Map *newmap(Typeinfo keyinfo, Typeinfo valinfo);
 void freemap(Map *map);
 void *getval(Map *map, void *key, Jstring *type);
+int setval(Map *map, void *key, Jstring *keytype, void *value, Jstring *valtype);

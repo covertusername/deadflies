@@ -77,8 +77,8 @@ _insert(List *l, void *item, Jstring *type, ulong index)
  * to preserve operational simplicity, 'contains' is only partially
  * implemented here.  the rest of the implementation depends on the type
  * itself, but essentially just needs be be a comparison operation.
- * returns the index of the item if the list contains it, otherwise
- * returns -1.
+ * returns the index of the first instance of the item if the list
+ * contains it, otherwise returns -1.
  */
 
 vlong

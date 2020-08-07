@@ -45,7 +45,7 @@ freemap(Map *map)
 	}
 }
 
-/* get a value from the map based on its key */
+/* get a value from the map based on its key, if any */
 
 void *
 getval(Map *map, void *key, Jstring *type)
@@ -58,4 +58,36 @@ getval(Map *map, void *key, Jstring *type)
 	if(map->info.isref)
 		incref(map->values[i]);
 	return map->values[i];
+}
+
+/* 
+ * given a key, set the corresponding value to value, creating a new
+ * entry if it doesn't exist
+*/
+
+int
+setval(Map *map, void *key, Jstring *keytype, void *value, Jstring *valtype)
+{
+	vlong i;
+	void *temp;
+
+	i = contains(map->set, key, keytype);
+	if(i == -1){
+		if(append(map->set, key, keytype) == -1){
+			werrstr("setval: %r");
+			return -1;
+		}
+		i = map->set->size - 1;
+		temp = realloc(map->values, map->set->size * sizeof(void *);
+		if(temp == nil){
+			lremove(map->set, i);
+			return -1;
+		}
+	}
+	if(map->info.typename->length != valtype->length || memcmp(map->info.typename->sequence, valtype->sequence, valtype->length) != 0){
+		werrstr("setval: map value type mismatch");
+		return -1;
+	}
+	map->values[i] = value;
+	return 0;
 }

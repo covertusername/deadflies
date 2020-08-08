@@ -213,6 +213,7 @@ empty(List *l)
 		l->info.freefunc(l->items[i]);
 	free(l->items);
 	l->items = temp;
+	return 0;
 }
 
 void
@@ -222,7 +223,7 @@ lremove(List *l, ulong index)
 
 	l->info.freefunc(l->items[index]);
 	l->size--;
-	memmove(l->items+index, l->items+index+1, (l->size - index) * sizeof(void *));
+	memmove(&(l->items[index]), &(l->items[index+1]), (l->size - index) * sizeof(void *));
 	temp = realloc(l->items, l->size);
 	if(temp == nil)
 		sysfatal("lremove: %r");
@@ -238,27 +239,27 @@ lremove(List *l, ulong index)
  */
 
 List *
-clone(List *donor)
+lclone(List *donor)
 {
-	List *_clone;
+	List *clone;
 	void *temp;
 	int i;
 
-	_clone = newlist(donor->listtype, donor->info);
-	if(_clone == nil)
+	clone = newlist(donor->listtype, donor->info);
+	if(clone == nil)
 		return nil;
-	temp = realloc(_clone->items, donor->size * sizeof(void *));
+	temp = realloc(clone->items, donor->size * sizeof(void *));
 	if(temp == nil){
-		freelist(_clone);
+		freelist(clone);
 		return nil;
 	}
-	_clone->items = temp;
-	memcpy(_clone->items, donor->items, donor->size * sizeof(void *));
-	if(_clone->info.isref)
-		for(i = 0; i < _clone->size; i++)
-			incref(_clone->items[i]);
-	_clone->size = donor->size;
-	return _clone;
+	clone->items = temp;
+	memcpy(clone->items, donor->items, donor->size * sizeof(void *));
+	if(clone->info.isref)
+		for(i = 0; i < clone->size; i++)
+			incref(clone->items[i]);
+	clone->size = donor->size;
+	return clone;
 }
 
 /*

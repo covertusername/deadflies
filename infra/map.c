@@ -91,3 +91,68 @@ setval(Map *map, void *key, Jstring *keytype, void *value, Jstring *valtype)
 	map->values[i] = value;
 	return 0;
 }
+
+void
+mremove(Map *map, ulong index)
+{
+	void *temp;
+
+	lremove(map->set, index);
+	map->info.freefunc(map->values[index]);
+	memmove(&(map->values[index]), &(map->values[index+1]), (map->set->size - index) * sizeof(void *));
+	temp = realloc(map->values, map->set->size);
+	if(temp == nil)
+		sysfatal("mremove: %r");
+	map->values = temp;
+}
+
+int
+clear(Map *map)
+{
+	ulong i;
+	void *temp;
+	ulong size;
+
+	size = map->set->size;
+	temp = malloc(0);
+	if(temp == nil)
+		return -1;
+	if(empty(map->set) == -1)
+		return -1;
+	for(i = 0; i < size; i++)
+		map->info.freefunc(map->values[i]);
+	free(map->values);
+	map->values = temp;
+	return 0;
+}
+
+/* contains() from the list functions can be re-used here via Map->set. we don't need to re-implement it. */
+
+/* we return a clone of Map->set here so we don't corrupt the map */
+
+List *
+getkeys(Map *map)
+{
+	return lclone(map->set);
+}
+
+List *
+getvals(Map *map)
+{
+	List *ret;
+	void *temp;
+
+	ret = newlist(Plain, map->info);
+	if(ret == nil)
+		return nil;
+	temp = realloc(ret->items, map->set->size * sizeof(void *));
+	if(temp == nil)
+		return nil;
+	ret->size = map->set->size;
+	ret->items = temp;
+	memcpy(ret->items, map->values, ret->size * sizeof(void *));
+	if(ret->info.isref)
+		for(i = 0; i < ret->size; i++)
+			incref(ret->items[i]);
+	return ret;
+}

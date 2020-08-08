@@ -49,7 +49,7 @@ int replace(List *l, ulong index, void *replacement, Jstring *type);
 int empty(List *l);
 int insert(List *l, void *item, Jstring *type, ulong index);
 void lremove(List *l, ulong index);
-List *clone(List *donor);
+List *lclone(List *donor);
 
 /* stacks */
 
@@ -73,3 +73,7 @@ Map *newmap(Typeinfo keyinfo, Typeinfo valinfo);
 void freemap(Map *map);
 void *getval(Map *map, void *key, Jstring *type);
 int setval(Map *map, void *key, Jstring *keytype, void *value, Jstring *valtype);
+void mremove(Map *map, ulong index);
+int clear(Map *map);
+List *getkeys(Map *map);
+List *getvals(Map *map);

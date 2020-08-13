@@ -253,10 +253,11 @@ lclone(List *donor)
 		freelist(clone);
 		return nil;
 	}
+	free(clone->items);
 	clone->items = temp;
 	memcpy(clone->items, donor->items, donor->size * sizeof(void *));
 	if(clone->info.isref)
-		for(i = 0; i < clone->size; i++)
+		for(i = 0; i < donor->size; i++)
 			incref(clone->items[i]);
 	clone->size = donor->size;
 	return clone;
@@ -369,7 +370,7 @@ union(List *a, List *b)
 {
 	List *ret;
 
-	ret = clone(a);
+	ret = lclone(a);
 	if(ret == nil)
 		return nil;
 	for(i = 0; i < b->size; i++){

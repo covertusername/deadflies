@@ -77,3 +77,4 @@ void mremove(Map *map, ulong index);
 int clear(Map *map);
 List *getkeys(Map *map);
 List *getvals(Map *map);
+Map *mclone(Map *map);

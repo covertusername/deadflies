@@ -156,3 +156,35 @@ getvals(Map *map)
 			incref(ret->items[i]);
 	return ret;
 }
+
+Map *
+mclone(Map *donor)
+{
+	Map *clone;
+	List *set;
+	void *temp;
+	int i;
+
+	clone = newmap(donor->set->info, donor->info);
+	if(clone == nil)
+		return nil;
+	set = lclone(donor->set);
+	if(set == nil){
+		freemap(clone);
+		return nil;
+	}
+	freelist(clone->set);
+	clone->set = set;
+	temp = realloc(clone->items, donor->set->size * sizeof(void *));
+	if(temp == nil){
+		freemap(clone);
+		return nil;
+	}
+	free(clone->values);
+	clone->values = temp;
+	memcpy(clone->values, donor->values, donor->set->size * sizeof(void *));
+	if(clone->info.isref)
+		for(i = 0; i < clone->set->size; i++)
+			incref(clone->items[i]);
+	return clone;
+}

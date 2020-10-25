@@ -366,7 +366,7 @@ intersection(List *a, List *b)
 }
 
 List *
-union(List *a, List *b)
+lunion(List *a, List *b)
 {
 	List *ret;
 

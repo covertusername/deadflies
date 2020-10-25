@@ -1,3 +1,24 @@
+typedef struct Jstring Jstring;
+typedef struct Byteseq Byteseq;
+typedef u16int codeunit;
+
+struct Jstring
+{
+	RWLock;
+	Ref;
+	codeunit *sequence;
+	ulong length;
+	int isscalar;
+};
+
+struct Byteseq
+{
+	RWLock;
+	Ref;
+	u8int *sequence;
+	ulong length;
+};
+
 /* ascii tests */
 
 int isasciistring(Jstring *j);
@@ -26,16 +47,6 @@ Jstring *collectrunes(int (*cond)(Rune), Jstring *input, ulong *pos);
 
 /* primitive types */
 
-typedef struct Byteseq Byteseq;
-
-struct Byteseq
-{
-	RWLock;
-	Ref;
-	u8int *sequence;
-	ulong length;
-};
-
 Byteseq *newbyteseq(ulong length);
 int resizebyteseq(Byteseq *seq, ulong length);
 void freebyteseq(Byteseq *seq);
@@ -43,18 +54,6 @@ int writebyteseq(Byteseq *seq, ulong off, void *ptr, ulong cnt);
 int readbyteseq(Byteseq *seq, ulong off, void *ptr, ulong cnt);
 Byteseq *lcasebyteseq(Byteseq *seq);
 Byteseq *ucasebyteseq(Byteseq *seq);
-
-typedef struct Jstring Jstring;
-typedef u16int codeunit;
-
-struct Jstring
-{
-	RWLock;
-	Ref;
-	codeunit *sequence;
-	ulong length;
-	int isscalar;
-};
 
 codeunit *appendcuseq(codeunit *oseq, ulong *oseql, codeunit *aseq, ulong aseql);
 Jstring *newjstring(ulong length);
@@ -123,7 +122,7 @@ struct Map
 	List *set; /* the key part of the map. always an ordered set. should not be used directly, unless returned when getting the keys. the items are the keys. */
 	Typeinfo info;
 	void **values;
-}
+};
 
 /* generic list operations */
 List *newlist(int listtype, Typeinfo info);
@@ -152,7 +151,7 @@ void *dequeue(List *l);
 
 int subset(List *a, List *b);
 List *intersection(List *a, List *b);
-List *union(List *a, List *b);
+List *lunion(List *a, List *b); /* stupid syntax conflixt */
 
 /* map operations */
 

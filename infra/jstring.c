@@ -30,6 +30,16 @@ appendcuseq(codeunit *oseq, ulong *oseql, codeunit *aseq, ulong aseql)
 	return cu;
 }
 
+/* 
+ * the javascript standard says strings have a maximum length of 2^53-1.
+ * this is not mentioned in the infra standard.  so, technically, length
+ * should be a uvlong here.  however, this is absolutely ridiculous and
+ * if you're working with strings that big you deserve to run into the
+ * 32-bit limit.  (or an oom condition.) if i wanted to be extra mean i
+ * suppose i could have made this 16-bit, but that seems excessive (and
+ * i'm not changing the implementation.)
+ */
+
 Jstring *
 newjstring(ulong length)
 {

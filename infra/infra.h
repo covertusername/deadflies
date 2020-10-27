@@ -80,7 +80,6 @@ int isasciiupper(Rune r);
 int isasciilower(Rune r);
 int isasciialpha(Rune r);
 int isasciialnum(Rune r);
-uint runecnt(Rune *r);
 
 /* data structures */
 

@@ -176,7 +176,7 @@ jstring(Rune *string)
 	codeunit *temp2;
 	codeunit casted;
 
-	stringlen = runecnt(string);
+	stringlen = runestrlen(string);
 	temp = nil;
 	tempsize = 0;
 	for(i = 0; i <= stringlen; i++){

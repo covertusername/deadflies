@@ -140,20 +140,3 @@ isasciialnum(Rune r)
 {
 	return isasciidigit(r) || isasciialpha(r);
 }
-
-/*
- * this next function isn't part of any standard, but there's no way to compute the length of a
- * null-terminated sequence of Runes within the plan 9 c library. this is a utility function that does
- * just that.
- */
-
-uint
-runecnt(Rune *r)
-{
-	ulong i;
-
-	i = 0;
-	while(r[i] != 0)
-		i++;
-	return i;
-}
